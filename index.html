@@ -12,11 +12,31 @@
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
     <style>
-      html, body {
+      /* make everything fullscreen with no scrollbars */
+      * {
         margin: 0;
-        overflow: hidden;
+        padding: 0;
+      }
+
+      html, body {
         width: 100%;
         height: 100%;
+        overflow: hidden;
+        background-color: black;
+      }
+
+      /* force the AR canvas and video to fill the whole screen */
+      a-scene {
+        width: 100%;
+        height: 100%;
+      }
+
+      canvas, video {
+        width: 100% !important;
+        height: 100% !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
       }
     </style>
   </head>
@@ -24,26 +44,23 @@
   <body>
 
     <!--
-      Main AR scene
-      - embedded: renders inside the page not fullscreen
-      - arjs: enables AR with webcam
-      - vr-mode-ui disabled: hides the VR headset button
-      - logarithmicDepthBuffer: fixes z-fighting between overlapping shapes
+      Main AR scene - not using embedded this time so it goes fullscreen
+      arjs handles the webcam and marker detection
+      vr-mode-ui disabled so no VR button shows up
     -->
     <a-scene
-      embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
       vr-mode-ui="enabled: false"
       renderer="logarithmicDepthBuffer: true;"
     >
 
-      <!-- Hiro is the default AR.js marker, print it or display on screen -->
+      <!-- Hiro is the default AR.js marker -->
       <a-marker preset="hiro">
 
         <!--
           Shape 1 - Red box in the center
-          small scale so it fits nicely above the marker without filling the screen
-          rotates continuously so the animation requirement is clearly met
+          small scale so it sits nicely on the marker
+          rotates continuously to clearly show animation
         -->
         <a-box
           position="0 0.15 0"
@@ -51,7 +68,7 @@
           scale="0.2 0.2 0.2"
           color="#e63946"
         >
-          <!-- spin the box around the Y axis forever -->
+          <!-- spin forever around Y axis -->
           <a-animation
             attribute="rotation"
             from="0 0 0"
@@ -63,8 +80,8 @@
         </a-box>
 
         <!--
-          Shape 2 - Blue sphere on the left of the box
-          bounces up and down so its easy to notice the animation
+          Shape 2 - Blue sphere on the left
+          bounces up and down so animation is obvious
         -->
         <a-sphere
           position="-0.3 0.1 0"
@@ -84,8 +101,8 @@
         </a-sphere>
 
         <!--
-          Shape 3 - Green cylinder on the right of the box
-          pulses in scale up and down like its breathing
+          Shape 3 - Green cylinder on the right
+          pulses in scale so it looks like its breathing
         -->
         <a-cylinder
           position="0.3 0.15 0"
@@ -93,7 +110,7 @@
           height="0.25"
           color="#2a9d8f"
         >
-          <!-- grow then shrink repeatedly -->
+          <!-- grow tall then shrink back down -->
           <a-animation
             attribute="scale"
             from="1 1 1"
@@ -106,8 +123,8 @@
         </a-cylinder>
 
         <!--
-          Shape 4 - Yellow cone sitting behind the box
-          adds variety to the scene without overlapping the other shapes
+          Shape 4 - Yellow cone behind the box
+          static shape just for variety and to meet the 3+ shapes requirement
         -->
         <a-cone
           position="0 0.1 -0.3"
@@ -117,8 +134,8 @@
         ></a-cone>
 
         <!--
-          Student name floating above all the shapes
-          white color so it stands out against the camera background
+          Student name above all shapes
+          white so it stands out against any background
         -->
         <a-text
           value="Murhaf Baik - CPIS360"
@@ -130,7 +147,7 @@
 
       </a-marker>
 
-      <!-- Camera entity needed for AR.js to access the device camera -->
+      <!-- camera entity required for AR.js to work -->
       <a-entity camera></a-entity>
 
     </a-scene>
