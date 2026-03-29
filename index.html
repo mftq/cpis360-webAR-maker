@@ -10,31 +10,48 @@
 
     <!-- AR.js adds marker-based AR support on top of A-Frame -->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+    <style>
+      /* make the canvas fill the whole screen */
+      html, body {
+        margin: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* force the video feed to fill the screen without zooming in */
+      .a-canvas, video {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+      }
+    </style>
   </head>
 
-  <body style="margin: 0; overflow: hidden;">
+  <body>
 
     <!--
       Main AR scene
       - embedded: renders inside the page not fullscreen
-      - arjs: enables AR with webcam, zoom set to 1 to fix zoomed in camera issue
-      - vr-mode-ui disabled: hides the VR headset button we dont need it
-      - logarithmicDepthBuffer: fixes z-fighting issues with overlapping shapes
+      - arjs: enables AR with webcam
+      - debugUIEnabled false: hides the debug overlay
+      - vr-mode-ui disabled: hides the VR headset button
+      - logarithmicDepthBuffer: fixes z-fighting between overlapping shapes
     -->
     <a-scene
       embedded
-      arjs="sourceType: webcam; debugUIEnabled: false; zoom: 1;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
       vr-mode-ui="enabled: false"
       renderer="logarithmicDepthBuffer: true;"
     >
 
-      <!-- Hiro is the default AR.js marker, print it or show it on screen -->
+      <!-- Hiro is the default AR.js marker, print it or display on screen -->
       <a-marker preset="hiro">
 
         <!--
           Shape 1 - Red box in the center
-          spins 360 degrees continuously so the animation is obvious
-          scaled up a bit so its easy to see
+          rotates 360 degrees continuously so the animation is very obvious
         -->
         <a-box
           position="0 0.6 0"
@@ -42,7 +59,7 @@
           scale="0.6 0.6 0.6"
           color="#e63946"
         >
-          <!-- rotate the box forever around the Y axis -->
+          <!-- spin the box around the Y axis forever -->
           <a-animation
             attribute="rotation"
             from="0 0 0"
@@ -55,14 +72,14 @@
 
         <!--
           Shape 2 - Blue sphere on the left
-          bounces up and down with a big range so its very visible
+          bounces up and down with a large range so its easy to see
         -->
         <a-sphere
           position="-1 0.5 0"
           radius="0.35"
           color="#457b9d"
         >
-          <!-- bounce from low to high repeatedly -->
+          <!-- bounce from low to high and back repeatedly -->
           <a-animation
             attribute="position"
             from="-1 0.2 0"
@@ -76,7 +93,7 @@
 
         <!--
           Shape 3 - Green cylinder on the right
-          grows and shrinks in scale so the animation is easy to notice
+          pulses in scale so it looks like its breathing
         -->
         <a-cylinder
           position="1 0.5 0"
@@ -84,7 +101,7 @@
           height="0.9"
           color="#2a9d8f"
         >
-          <!-- pulse the cylinder scale up and down -->
+          <!-- grow tall then shrink back down repeatedly -->
           <a-animation
             attribute="scale"
             from="1 1 1"
@@ -98,7 +115,7 @@
 
         <!--
           Shape 4 - Yellow cone behind the box
-          adds more depth and variety to the scene
+          static shape just to add variety and depth to the scene
         -->
         <a-cone
           position="0 0.4 -1"
@@ -108,8 +125,8 @@
         ></a-cone>
 
         <!--
-          Student name shown above everything
-          white so it contrasts well with the camera feed background
+          Student name floating above all the shapes
+          white color so it stands out against the camera background
         -->
         <a-text
           value="Murhaf Baik - CPIS360"
@@ -121,8 +138,11 @@
 
       </a-marker>
 
-      <!-- Camera entity required for AR.js to access the device camera -->
-      <a-entity camera></a-entity>
+      <!--
+        Camera with a wider FOV to fix the zoomed in issue on mobile
+        80 degrees is a natural wide angle that matches most phone cameras
+      -->
+      <a-entity camera fov="80"></a-entity>
 
     </a-scene>
 
