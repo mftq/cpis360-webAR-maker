@@ -12,19 +12,11 @@
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
     <style>
-      /* make the canvas fill the whole screen */
       html, body {
         margin: 0;
         overflow: hidden;
         width: 100%;
         height: 100%;
-      }
-
-      /* force the video feed to fill the screen without zooming in */
-      .a-canvas, video {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover;
       }
     </style>
   </head>
@@ -35,7 +27,6 @@
       Main AR scene
       - embedded: renders inside the page not fullscreen
       - arjs: enables AR with webcam
-      - debugUIEnabled false: hides the debug overlay
       - vr-mode-ui disabled: hides the VR headset button
       - logarithmicDepthBuffer: fixes z-fighting between overlapping shapes
     -->
@@ -51,12 +42,13 @@
 
         <!--
           Shape 1 - Red box in the center
-          rotates 360 degrees continuously so the animation is very obvious
+          small scale so it fits nicely above the marker without filling the screen
+          rotates continuously so the animation requirement is clearly met
         -->
         <a-box
-          position="0 0.6 0"
+          position="0 0.15 0"
           rotation="0 45 0"
-          scale="0.6 0.6 0.6"
+          scale="0.2 0.2 0.2"
           color="#e63946"
         >
           <!-- spin the box around the Y axis forever -->
@@ -71,19 +63,19 @@
         </a-box>
 
         <!--
-          Shape 2 - Blue sphere on the left
-          bounces up and down with a large range so its easy to see
+          Shape 2 - Blue sphere on the left of the box
+          bounces up and down so its easy to notice the animation
         -->
         <a-sphere
-          position="-1 0.5 0"
-          radius="0.35"
+          position="-0.3 0.1 0"
+          radius="0.1"
           color="#457b9d"
         >
-          <!-- bounce from low to high and back repeatedly -->
+          <!-- bounce up and down repeatedly -->
           <a-animation
             attribute="position"
-            from="-1 0.2 0"
-            to="-1 1.0 0"
+            from="-0.3 0.05 0"
+            to="-0.3 0.25 0"
             dur="800"
             direction="alternate"
             repeat="indefinite"
@@ -92,20 +84,20 @@
         </a-sphere>
 
         <!--
-          Shape 3 - Green cylinder on the right
-          pulses in scale so it looks like its breathing
+          Shape 3 - Green cylinder on the right of the box
+          pulses in scale up and down like its breathing
         -->
         <a-cylinder
-          position="1 0.5 0"
-          radius="0.25"
-          height="0.9"
+          position="0.3 0.15 0"
+          radius="0.07"
+          height="0.25"
           color="#2a9d8f"
         >
-          <!-- grow tall then shrink back down repeatedly -->
+          <!-- grow then shrink repeatedly -->
           <a-animation
             attribute="scale"
             from="1 1 1"
-            to="1 1.6 1"
+            to="1 1.8 1"
             dur="900"
             direction="alternate"
             repeat="indefinite"
@@ -114,13 +106,13 @@
         </a-cylinder>
 
         <!--
-          Shape 4 - Yellow cone behind the box
-          static shape just to add variety and depth to the scene
+          Shape 4 - Yellow cone sitting behind the box
+          adds variety to the scene without overlapping the other shapes
         -->
         <a-cone
-          position="0 0.4 -1"
-          radius-bottom="0.35"
-          height="0.7"
+          position="0 0.1 -0.3"
+          radius-bottom="0.1"
+          height="0.2"
           color="#e9c46a"
         ></a-cone>
 
@@ -131,18 +123,15 @@
         <a-text
           value="Murhaf Baik - CPIS360"
           align="center"
-          position="0 1.6 0"
-          scale="1 1 1"
+          position="0 0.45 0"
+          scale="0.35 0.35 0.35"
           color="#ffffff"
         ></a-text>
 
       </a-marker>
 
-      <!--
-        Camera with a wider FOV to fix the zoomed in issue on mobile
-        80 degrees is a natural wide angle that matches most phone cameras
-      -->
-      <a-entity camera fov="80"></a-entity>
+      <!-- Camera entity needed for AR.js to access the device camera -->
+      <a-entity camera></a-entity>
 
     </a-scene>
 
