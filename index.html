@@ -15,8 +15,23 @@
     </style>
 
     <script>
-      // after the page loads, force the video element to fill the screen
-      // this fixes the zoom issue on mobile without breaking the AR tracking
+      // override the default camera to force the wide angle lens
+      // S23 and similar phones default to telephoto which looks zoomed in
+      var originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+      navigator.mediaDevices.getUserMedia = function (constraints) {
+        // force back camera with a wide zoom level
+        if (constraints && constraints.video) {
+          constraints.video = {
+            facingMode: { exact: 'environment' },
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+            zoom: 1.0
+          };
+        }
+        return originalGetUserMedia(constraints);
+      };
+
+      // also fix the video element size after AR.js creates it
       window.addEventListener('load', function () {
         var checkVideo = setInterval(function () {
           var video = document.querySelector('video');
