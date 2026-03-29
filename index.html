@@ -55,42 +55,67 @@
 
         <!--
           Shape 1 - Red box in the center
-          uses modern animation attribute instead of a-animation tag
-          rotates continuously around Y axis
+          spins continuously around Y axis
         -->
         <a-box
           position="0 0.3 0"
           rotation="0 45 0"
           scale="0.4 0.4 0.4"
           color="#e63946"
-          animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 3000; easing: linear"
-        ></a-box>
+        >
+          <a-animation
+            attribute="rotation"
+            from="0 0 0"
+            to="0 360 0"
+            dur="3000"
+            easing="linear"
+            repeat="indefinite"
+          ></a-animation>
+        </a-box>
 
         <!--
           Shape 2 - Blue sphere on the left
-          bounces up and down using modern animation attribute
+          bounces up and down
         -->
         <a-sphere
           position="-0.6 0.2 0"
           radius="0.2"
           color="#457b9d"
-          animation="property: position; from: -0.6 0.2 0; to: -0.6 0.5 0; loop: true; dur: 800; dir: alternate; easing: easeInOutSine"
-        ></a-sphere>
+        >
+          <a-animation
+            attribute="position"
+            from="-0.6 0.2 0"
+            to="-0.6 0.5 0"
+            dur="800"
+            direction="alternate"
+            repeat="indefinite"
+            easing="ease-in-out"
+          ></a-animation>
+        </a-sphere>
 
         <!--
           Shape 3 - Green cylinder on the right
-          pulses in scale using modern animation attribute
+          grows and shrinks in scale
         -->
         <a-cylinder
           position="0.6 0.25 0"
           radius="0.15"
           height="0.5"
           color="#2a9d8f"
-          animation="property: scale; from: 1 1 1; to: 1 1.8 1; loop: true; dur: 900; dir: alternate; easing: easeInOutSine"
-        ></a-cylinder>
+        >
+          <a-animation
+            attribute="scale"
+            from="1 1 1"
+            to="1 1.8 1"
+            dur="900"
+            direction="alternate"
+            repeat="indefinite"
+            easing="ease-in-out"
+          ></a-animation>
+        </a-cylinder>
 
         <!--
-          Shape 4 - Yellow cone in front so it doesnt hide behind other shapes
+          Shape 4 - Yellow cone in front
           static shape for variety
         -->
         <a-cone
@@ -101,8 +126,8 @@
         ></a-cone>
 
         <!--
-          Student name floating well above all shapes so it doesnt overlap
-          white so it stands out clearly against any background
+          Student name floating above all shapes
+          white so it stands out clearly
         -->
         <a-text
           value="Murhaf Baik - CPIS360"
