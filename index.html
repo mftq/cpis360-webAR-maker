@@ -1,88 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>CPIS360 WebAR</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CPIS360 - WebAR Lab</title>
 
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <!-- A-Frame and AR.js -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
-  <!-- AR.js (STABLE VERSION) -->
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-</head>
+    <style>
+      * { margin: 0; padding: 0; }
+      html, body { width: 100%; height: 100%; overflow: hidden; }
+    </style>
 
-<body style="margin: 0; overflow: hidden;">
+    <script>
+      // after the page loads, force the video element to fill the screen
+      // this fixes the zoom issue on mobile without breaking the AR tracking
+      window.addEventListener('load', function () {
+        var checkVideo = setInterval(function () {
+          var video = document.querySelector('video');
+          if (video) {
+            video.style.width = '100vw';
+            video.style.height = '100vh';
+            video.style.objectFit = 'cover';
+            video.style.position = 'fixed';
+            video.style.top = '0';
+            video.style.left = '0';
+            video.style.zIndex = '-1';
+            clearInterval(checkVideo);
+          }
+        }, 100);
+      });
+    </script>
+  </head>
 
-  <a-scene
-    embedded
-    vr-mode-ui="enabled: false"
-    renderer="logarithmicDepthBuffer: true;"
-    arjs="
-      sourceType: webcam;
-      trackingMethod: best;
-      debugUIEnabled: false;
-      detectionMode: mono;
-    "
-  >
+  <body>
 
-    <!-- MARKER WITH SMOOTHING -->
-    <a-marker
-      preset="hiro"
-      smooth="true"
-      smoothCount="10"
-      smoothTolerance="0.01"
-      smoothThreshold="5"
+    <!--
+      Main AR scene
+      embedded = fits in the browser window
+      arjs = webcam access and hiro marker detection
+      vr-mode-ui disabled = no VR button needed
+    -->
+    <a-scene
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      vr-mode-ui="enabled: false"
+      renderer="logarithmicDepthBuffer: true;"
     >
 
-      <!-- BOX -->
-      <a-box
-        position="0 0.5 0"
-        rotation="0 45 0"
-        scale="0.5 0.5 0.5"
-        color="#e63946"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
-      ></a-box>
+      <!-- Hiro marker - point camera at printed hiro marker -->
+      <a-marker preset="hiro">
 
-      <!-- SPHERE -->
-      <a-sphere
-        position="-0.8 0.4 0"
-        radius="0.3"
-        color="#457b9d"
-        animation="property: position; dir: alternate; dur: 1000; loop: true; to: -0.8 0.8 0"
-      ></a-sphere>
+        <!--
+          Shape 1 - Red box in the center
+          rotates continuously to clearly show the animation requirement
+        -->
+        <a-box
+          position="0 0.5 0"
+          rotation="0 45 0"
+          scale="0.5 0.5 0.5"
+          color="#e63946"
+        >
+          <!-- spin the box around Y axis forever -->
+          <a-animation
+            attribute="rotation"
+            to="0 360 0"
+            dur="3000"
+            easing="linear"
+            repeat="indefinite"
+          ></a-animation>
+        </a-box>
 
-      <!-- CYLINDER -->
-      <a-cylinder
-        position="0.8 0.5 0"
-        radius="0.2"
-        height="0.8"
-        color="#2a9d8f"
-      ></a-cylinder>
+        <!--
+          Shape 2 - Blue sphere on the left
+          bounces up and down so the animation is very obvious
+        -->
+        <a-sphere
+          position="-0.8 0.4 0"
+          radius="0.3"
+          color="#457b9d"
+        >
+          <!-- bounce up and down repeatedly -->
+          <a-animation
+            attribute="position"
+            from="-0.8 0.4 0"
+            to="-0.8 0.8 0"
+            dur="1000"
+            direction="alternate"
+            repeat="indefinite"
+            easing="ease-in-out"
+          ></a-animation>
+        </a-sphere>
 
-      <!-- CONE -->
-      <a-cone
-        position="0 0.4 -0.8"
-        radius-bottom="0.3"
-        height="0.6"
-        color="#e9c46a"
-      ></a-cone>
+        <!--
+          Shape 3 - Green cylinder on the right
+          pulses in scale so it looks like its breathing
+        -->
+        <a-cylinder
+          position="0.8 0.5 0"
+          radius="0.2"
+          height="0.8"
+          color="#2a9d8f"
+        >
+          <!-- grow and shrink repeatedly -->
+          <a-animation
+            attribute="scale"
+            from="1 1 1"
+            to="1 1.8 1"
+            dur="900"
+            direction="alternate"
+            repeat="indefinite"
+            easing="ease-in-out"
+          ></a-animation>
+        </a-cylinder>
 
-      <!-- TEXT -->
-      <a-text
-        value="Murhaf Baik - CPIS360"
-        align="center"
-        position="0 1.3 0"
-        scale="0.8 0.8 0.8"
-        color="#ffffff"
-      ></a-text>
+        <!--
+          Shape 4 - Yellow cone behind the box
+          adds variety and depth to the scene
+        -->
+        <a-cone
+          position="0 0.4 -0.8"
+          radius-bottom="0.3"
+          height="0.6"
+          color="#e9c46a"
+        ></a-cone>
 
-    </a-marker>
+        <!--
+          Student name above all shapes
+          white so it stands out clearly
+        -->
+        <a-text
+          value="Murhaf Baik - CPIS360"
+          align="center"
+          position="0 1.3 0"
+          scale="0.8 0.8 0.8"
+          color="#ffffff"
+        ></a-text>
 
-    <!-- CAMERA (FIXED) -->
-    <a-entity camera look-controls="enabled: false"></a-entity>
+      </a-marker>
 
-  </a-scene>
+      <!-- camera entity required for AR.js -->
+      <a-entity camera></a-entity>
 
-</body>
+    </a-scene>
+
+  </body>
 </html>
