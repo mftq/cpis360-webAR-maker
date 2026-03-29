@@ -10,59 +10,29 @@
 
     <!-- AR.js adds marker-based AR support on top of A-Frame -->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-
-      html, body {
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-        background: black;
-      }
-
-      /* fix the video feed to fill the whole screen */
-      #arjs-video {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        object-fit: cover !important;
-        z-index: -1;
-      }
-
-      /* fix the canvas to also fill the whole screen */
-      canvas {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-      }
-    </style>
   </head>
 
-  <body>
+  <body style="margin: 0; overflow: hidden;">
 
     <!--
-      Using embedded mode with a-scene
-      sourceType webcam for camera access
-      detectionMode and matrixCodeType for reliable hiro marker detection
+      Main AR scene
+      - embedded: renders inside the page
+      - arjs: enables AR with webcam
+      - vr-mode-ui disabled: hides the VR button
     -->
     <a-scene
       embedded
-      arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
       vr-mode-ui="enabled: false"
-      renderer="logarithmicDepthBuffer: true; antialias: true;"
+      renderer="logarithmicDepthBuffer: true;"
     >
 
-      <!-- Hiro marker - point camera at the printed hiro marker -->
+      <!-- Hiro marker - point camera at printed hiro marker -->
       <a-marker preset="hiro">
 
         <!--
           Shape 1 - Red rotating box in the center
-          keeps rotating so the animation is clearly visible
+          small scale so it fits nicely on the marker
         -->
         <a-box
           position="0 0.15 0"
@@ -82,8 +52,8 @@
         </a-box>
 
         <!--
-          Shape 2 - Blue sphere on the left side
-          bounces up and down so animation is very noticeable
+          Shape 2 - Blue sphere on the left
+          bounces up and down so the animation is obvious
         -->
         <a-sphere
           position="-0.3 0.1 0"
@@ -103,8 +73,8 @@
         </a-sphere>
 
         <!--
-          Shape 3 - Green cylinder on the right side
-          pulses in scale to show a different type of animation
+          Shape 3 - Green cylinder on the right
+          pulses in scale so it looks like its breathing
         -->
         <a-cylinder
           position="0.3 0.15 0"
@@ -112,7 +82,7 @@
           height="0.25"
           color="#2a9d8f"
         >
-          <!-- grow and shrink repeatedly -->
+          <!-- grow tall then shrink back down -->
           <a-animation
             attribute="scale"
             from="1 1 1"
@@ -126,7 +96,7 @@
 
         <!--
           Shape 4 - Yellow cone behind the box
-          static shape for variety, meets the 3+ shapes requirement
+          static shape just to add variety to the scene
         -->
         <a-cone
           position="0 0.1 -0.3"
@@ -136,8 +106,8 @@
         ></a-cone>
 
         <!--
-          Student name displayed above all shapes
-          white text so it shows up against any background
+          Student name above all shapes
+          white so it stands out against any background
         -->
         <a-text
           value="Murhaf Baik - CPIS360"
