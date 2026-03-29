@@ -5,43 +5,38 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>WebAR Lab - CPIS360</title>
 
-    <!-- these two libraries are needed to make AR work in the browser -->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-
-    <!-- makes the box spin -->
-    <script>
-      AFRAME.registerComponent('spin', {
-        tick: function (time, delta) {
-          var rot = this.el.getAttribute('rotation');
-          rot.y += delta * 0.1;
-          this.el.setAttribute('rotation', rot);
-        }
-      });
-    </script>
+    <!-- using matching versions - aframe 1.6.0 with arjs 3.4.7 -->
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.7/aframe/build/aframe-ar.js"></script>
   </head>
 
   <body style="margin: 0; overflow: hidden;">
 
-    <!-- this is the main AR scene -->
+    <!-- main AR scene -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;" vr-mode-ui="enabled: false">
 
-      <!-- the hiro marker is what the camera looks for -->
+      <!-- hiro marker -->
       <a-marker preset="hiro" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
 
         <!-- red box in the middle that spins -->
-        <a-box position="0 0.3 0" scale="0.4 0.4 0.4" color="#e63946" spin></a-box>
+        <a-box position="0 0.3 0" scale="0.4 0.4 0.4" color="#e63946">
+          <a-animation attribute="rotation" from="0 0 0" to="0 360 0" dur="3000" easing="linear" repeat="indefinite"></a-animation>
+        </a-box>
 
-        <!-- blue sphere on the left -->
-        <a-sphere position="-0.6 0.2 0" radius="0.2" color="#457b9d"></a-sphere>
+        <!-- blue sphere on the left that bounces -->
+        <a-sphere position="-0.6 0.2 0" radius="0.2" color="#457b9d">
+          <a-animation attribute="position" from="-0.6 0.2 0" to="-0.6 0.5 0" dur="800" direction="alternate" repeat="indefinite" easing="ease-in-out"></a-animation>
+        </a-sphere>
 
-        <!-- green cylinder on the right -->
-        <a-cylinder position="0.6 0.25 0" radius="0.15" height="0.5" color="#2a9d8f"></a-cylinder>
+        <!-- green cylinder on the right that grows and shrinks -->
+        <a-cylinder position="0.6 0.25 0" radius="0.15" height="0.5" color="#2a9d8f">
+          <a-animation attribute="scale" from="1 1 1" to="1 1.8 1" dur="900" direction="alternate" repeat="indefinite" easing="ease-in-out"></a-animation>
+        </a-cylinder>
 
-        <!-- yellow cone in the front -->
+        <!-- yellow cone just sitting there -->
         <a-cone position="0 0.2 0.6" radius-bottom="0.2" height="0.4" color="#e9c46a"></a-cone>
 
-        <!-- my name displayed above the shapes -->
+        <!-- my name above everything -->
         <a-text value="Murhaf Baik - CPIS360" align="center" position="0 1.0 0" scale="0.7 0.7 0.7" color="#ffffff"></a-text>
 
       </a-marker>
