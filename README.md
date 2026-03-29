@@ -1,12 +1,10 @@
-CPIS360 - WebAR Marker-Based Application
-This project is a marker-based WebAR application built using A-Frame and AR.js, developed as part of the CPIS360 Introduction to Immersive Technologies lab assignment.
-When the camera is pointed at a Hiro marker, four 3D shapes appear above it a rotating red box, a bouncing blue sphere, a pulsing green cylinder, and a yellow cone. The scene also displays the student's name above the shapes.
-The project is hosted on GitHub Pages and works directly in a mobile browser with no app installation required.
+CPIS360 - WebAR Lab Assignment
+A simple marker-based AR web app built with A-Frame and AR.js. Point your phone camera at a Hiro marker and 4 shapes will appear a spinning red box, a blue sphere, a green cylinder, and a yellow cone. My name is also displayed above the shapes.
 How to use:
 
-Open the GitHub Pages link on your phone
+Open the link on your phone
 Allow camera access
-Point the camera at a Hiro marker
-Watch the shapes appear!
+Point at a Hiro marker
+Shapes appear!
 
-Built with: A-Frame 1.4.0 and AR.js
+Built with: A-Frame 1.6.0 and AR.js 3.4.7
